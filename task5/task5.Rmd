@@ -1,0 +1,84 @@
+---
+title: "task5"
+author: "Darius Buðniauskas"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library('prob')
+```
+
+## Random variable challenge
+Tarkime, kad ridenami trys taisyklingi standartiniai lošimo kauliukai. Fiksuojama iškritusiu akuciu suma, pažymekime ši atsitiktini dydi S.
+
+1. Atlikite Monte-Carlo modeliavima sugeneruodami S atsitiktinio dydžio nepriklausomas realizacijas S1, S2, …, Sn. Cia n=10^5.
+
+```{r}
+n <- 10^5
+S <- replicate(n, sum(sample(1:6, 3, replace = TRUE)))
+head(S)
+```
+Pateikeme 6 atsitiktinio dydžio realizacijas.
+
+2. Raskite teorini S skirstini, t.y. kiekvienai galimai S reikšmei raskite pasirodymo tikimybe.
+
+```{r}
+skirst <- rolldie(3, nsides = 6, makespace = TRUE)
+skirst <- addrv(skirst, sum = X1 + X2 + X3)
+S_teor <- marginal(skirst, vars="sum")
+S_teor
+```
+
+3. Ið sugeneruotos imties, padarykite santykiniu dažniu lentele ir gautas reikšmes palyginkite su teorinemis tikimybemis. Palyginimui pateikite grafika ir lentele, taip, kad butu patogu lyginti gautus rezultatus.
+
+```{r}
+cbind(as.data.frame(table(S)/n), S_teor)
+```
+
+IŠ lenteles duomenu matome, kad teorines reikšmes yra panašios su praktinem reikšmemis.
+
+```{r}
+plot(table(S)/10^5, xlab="Suma", ylab="Tikimybe")
+lines(S_teor, col = "green", type="l")
+lb <- c("Praktinis skirst.", "Teorinis skirst.")
+legend("topright", y=NULL, lty=1,lb, bty="n" , col=c("black", "green"))
+
+```
+
+4. Suskaiciuokite teorini s vidurki ir dispersija. Padarykite grafikus, kuriuose matytusi, kaip didejant n minetu charakteristiku ivertiniai arteja i teorines reikšmes.
+
+Teorinis vidurkis:
+
+```{r}
+ES <- sum(S_teor$probs * S_teor$sum)
+ES
+```
+
+Teori dispersija:
+
+```{r}
+varS <- sum(S_teor$probs * (S_teor$sum-ES)^2)
+varS
+```
+
+```{r}
+plot(cumsum(S)/1:n, type="l", xlab="n", ylab = "S / n", main="Vidurkio artejimas i teorine reikšme")
+abline(h=ES, col=2)
+```
+
+* Dispersijos artÄ??jimas ÄÆ teorinÄ?? reikÅ”mÄ?? :
+```{r}
+a=rep(0, n/10)
+for(i in 1:10000){
+  a[i]=var(S[1:i])
+}
+plot(a, type="l", xlab="n/10", ylab="Dispersija", main="Dispersijos artejimas i teorine reikšme")
+abline(h=varS, col=2)
+```
+
+Žiureta i :
+
+  "Introduction to Probability and Statistics Using R" G. Jay Kerns 
+  
+  Kreipas didelis demesys i Simonos Gritytes, Orintos Jautakaites, Sandros Kozlovskajos, Agnes Zavackaites bei Editos Basytes darbus.
