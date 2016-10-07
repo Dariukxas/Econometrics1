@@ -1,0 +1,42 @@
+---
+title: "task6"
+author: "Darius Buðniauskas"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library('chron')
+```
+
+## Swirl rezultatai
+
+Nuskaitysime duotus duomenis ir patikrimsime kokio jie tipo.
+
+```{r}
+df = read.csv('C:/Users/dariu_000/Desktop/Econometrics1/bandymas/Econometrics1/task6/R_programing_swirlResults.csv', stringsAsFactors=FALSE)
+sapply(df, class)
+```
+
+Patikrinæ duomenø tipà, pastebëjom, kad datø tipai nëra teisingi, tai pakeièiam juos.
+
+```{r}
+df <- transform(df, sysTime = as.POSIXlt(sysTime), datetime = as.POSIXlt(datetime))
+```
+
+Perziurime uþduotis dariusius vartotojus ir kiek klausimø kiekvienas jø atliko:
+
+```{r echo=TRUE}
+table(df$user)
+```
+
+Perziurejus vartotojus ir ju daryta uzduociu skaiciu, matome, vartotojai "1vbutkus", "aaa", "testas" nera studentai, tai juos reik istrinti.
+
+```{r echo=TRUE}
+c=df$user %in% c("1vbutkus", "aaa", "testas")
+ddf=df[!c,] 
+```
+
+```{r echo=TRUE}
+table(ddf$user)
+```
