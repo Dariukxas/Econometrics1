@@ -157,23 +157,80 @@ sapply(df, class)</code></pre>
 ##               419                 6               378</code></pre>
 <p>Perziurejus vartotojus ir ju daryta uzduociu skaiciu, matome, vartotojai “1vbutkus”, “aaa”, “testas” nera studentai, tai juos reik istrinti.</p>
 <pre class="r"><code>c=df$user %in% c(&quot;1vbutkus&quot;, &quot;aaa&quot;, &quot;testas&quot;)
-ddf=df[!c,]</code></pre>
-<pre class="r"><code>table(ddf$user)</code></pre>
+ddf=df[!c,] </code></pre>
+<p>Istrinus eilutes kurios nepriklaso studentams, pastebim, kad kaikurie studentai pasikartoja, yra uzsivadine skirtyngais vardais: “Juste”, “juste”, “ju”, “j” ir “gyse”, “gyse3054” bei “rokasalek”, “rokasaleks”, tai kiekviena is ju priskiriam vienam vartotojui.</p>
+<pre class="r"><code>ddf$user[ddf$user==&quot;gyse&quot;] &lt;- &quot;gyse3054&quot;
+ddf$user[ddf$user==&quot;rokasalek&quot;] &lt;- &quot;rokasaleks&quot;
+ddf$user[ddf$user==&quot;Juste&quot; | ddf$user==&quot;ju&quot; | ddf$user==&quot;j&quot;] &lt;- &quot;juste&quot;
+table(ddf$user)</code></pre>
 <pre><code>## 
 ##            aipe00         Danielius         Dariukxas Domante Bulovaite 
 ##               344                 3               425               387 
-##         Dominykas          edba2903          emru3000              gyse 
-##                 2               280               413                26 
-##          gyse3054             Greta          gretajes                 j 
-##               395               385               321                41 
-##                ju             juste             Juste          Karolina 
-##                30                63                99               409 
+##         Dominykas          edba2903          emru3000          gyse3054 
+##                 2               280               413               421 
+##             Greta          gretajes             juste          Karolina 
+##               385               321               233               409 
 ##           kestous          MildaPie           ogadova       ojautakaite 
 ##               419               346               424               471 
-##         Raigardas         rokasalek        rokasaleks SandraKozlovskaja 
-##               358                 2               396               379 
-##        simona1234  simonalevickaite       sindeivydas           zagnyte 
-##               333               357               419               378</code></pre>
+##         Raigardas        rokasaleks SandraKozlovskaja        simona1234 
+##               358               398               379               333 
+##  simonalevickaite       sindeivydas           zagnyte 
+##               357               419               378</code></pre>
+<p>Tikrinam ar studentai nepateike tu paciu uzduociu po du kartus ar daugiau, ir istrinam nereikalinga.</p>
+<pre class="r"><code>ddf2 &lt;- ddf[,c(7, 9, 10, 12, 14)]
+dup &lt;- which(duplicated(ddf2), TRUE)
+ddf &lt;- ddf[-dup,]
+table(ddf$user)</code></pre>
+<pre><code>## 
+##            aipe00         Danielius         Dariukxas Domante Bulovaite 
+##               344                 3               425               387 
+##         Dominykas          edba2903          emru3000          gyse3054 
+##                 2               280               413               419 
+##             Greta          gretajes             juste          Karolina 
+##               385               256               233               407 
+##           kestous          MildaPie           ogadova       ojautakaite 
+##               376               346               373               470 
+##         Raigardas        rokasaleks SandraKozlovskaja        simona1234 
+##               358               398               379               333 
+##  simonalevickaite       sindeivydas           zagnyte 
+##               357               419               378</code></pre>
+</div>
+<div id="swirlo-uzduotys" class="section level2">
+<h2>Swirlo uzduotys</h2>
+<p>Kad surast studentus, kurie atliko pilnai uzduotis, reik pirma pasalint tuos, kurie klausimus praleido. Tai pirma randam juos.</p>
+<pre class="r"><code>table(ddf[ddf$skipped==TRUE,7])</code></pre>
+<pre><code>## 
+##         Dariukxas Domante Bulovaite          gyse3054             Greta 
+##                30                11                96                24 
+##          gretajes             juste          Karolina           kestous 
+##                 1                 2                76               269 
+##           ogadova       ojautakaite         Raigardas        rokasaleks 
+##               131                 8                 9               114 
+## SandraKozlovskaja  simonalevickaite       sindeivydas 
+##                16                 5                18</code></pre>
+<p>Dabar pasalinsime studentus is saraso, kurie praleido bent viena uzduoti ir tuos kurie nepadare visu uzduociu ir parodysim sarasa is likusiu studentu.</p>
+<pre class="r"><code>c=ddf$user %in% c(&quot;Dariukxas&quot;, &quot;Domante Bulovaite&quot;, &quot;Greta&quot;, &quot;gretajes&quot;, &quot;gyse3054&quot;, &quot;juste&quot;, &quot;Juste&quot;, &quot;Karolina&quot;, &quot;kestous&quot;, &quot;ogadova&quot;, &quot;ojautakaite&quot;,  &quot;Raigardas&quot;, &quot;rokasaleks&quot;, &quot;SandraKozlovskaja&quot;, &quot;simonalevickaite&quot;, &quot;sindeivydas&quot;, &quot;j&quot; , &quot;ju&quot; , &quot;Danielius&quot; , &quot;Dominykas&quot; , &quot;rokasalek&quot;)
+table(ddf[!(c),7])</code></pre>
+<pre><code>## 
+##     aipe00   edba2903   emru3000   MildaPie simona1234    zagnyte 
+##        344        280        413        346        333        378</code></pre>
+<p>Issiaiskinsim, is likusiuju studentu,kurie atliko visas 16 pamoku, o kurie ne.</p>
+<pre class="r"><code> d=data.frame(ddf$user, ddf$lesson_name)
+ d2=d[!duplicated(d), ]
+ table(d2[,1])</code></pre>
+<pre><code>## 
+##            aipe00         Danielius         Dariukxas Domante Bulovaite 
+##                16                 1                16                16 
+##         Dominykas          edba2903          emru3000          gyse3054 
+##                 1                11                16                16 
+##             Greta          gretajes             juste          Karolina 
+##                16                 9                 9                16 
+##           kestous          MildaPie           ogadova       ojautakaite 
+##                16                15                16                15 
+##         Raigardas        rokasaleks SandraKozlovskaja        simona1234 
+##                16                16                16                16 
+##  simonalevickaite       sindeivydas           zagnyte 
+##                15                16                16</code></pre>
 </div>
 
 

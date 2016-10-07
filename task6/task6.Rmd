@@ -37,6 +37,37 @@ c=df$user %in% c("1vbutkus", "aaa", "testas")
 ddf=df[!c,] 
 ```
 
-```{r echo=TRUE}
+Istrinus eilutes kurios nepriklaso studentams, pastebim, kad kaikurie studentai pasikartoja, yra uzsivadine skirtyngais vardais: "Juste", "juste", "ju", "j" ir "gyse", "gyse3054" bei "rokasalek", "rokasaleks", tai kiekviena is ju priskiriam vienam vartotojui.
+
+```{r}
+ddf$user[ddf$user=="gyse"] <- "gyse3054"
+ddf$user[ddf$user=="rokasalek"] <- "rokasaleks"
+ddf$user[ddf$user=="Juste" | ddf$user=="ju" | ddf$user=="j"] <- "juste"
 table(ddf$user)
 ```
+
+Tikrinam ar studentai nepateike tu paciu uzduociu po du kartus ar daugiau, ir istrinam nereikalinga.
+
+```{r}
+ddf2 <- ddf[,c(7, 9, 10, 12, 14)]
+dup <- which(duplicated(ddf2), TRUE)
+ddf <- ddf[-dup,]
+table(ddf$user)
+```
+
+## Swirlo uzduotys
+
+Kad surast studentus, kurie atliko pilnai uzduotis, reik pirma pasalint tuos, kurie klausimus praleido. Tai pirma randam juos.
+
+```{r echo=TRUE}
+table(ddf[ddf$skipped==TRUE,7])
+```
+
+Dabar pasalinsime studentus is saraso, kurie praleido bent viena uzduoti ir tuos kurie nepadare visu uzduociu ir parodysim sarasa is likusiu studentu.
+
+```{r echo=TRUE}
+c=ddf$user %in% c("Dariukxas", "Domante Bulovaite", "Greta", "gretajes", "gyse3054", "juste", "Juste", "Karolina", "kestous", "ogadova", "ojautakaite",  "Raigardas", "rokasaleks", "SandraKozlovskaja", "simonalevickaite", "sindeivydas", "j" , "ju" , "Danielius" , "Dominykas" , "rokasalek")
+table(ddf[!(c),7])
+```
+
+
