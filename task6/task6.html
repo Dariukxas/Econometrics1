@@ -157,7 +157,7 @@ sapply(df, class)</code></pre>
 ##               419                 6               378</code></pre>
 <p>Perziurejus vartotojus ir ju daryta uzduociu skaiciu, matome, vartotojai “1vbutkus”, “aaa”, “testas” nera studentai, tai juos reik istrinti.</p>
 <pre class="r"><code>c=df$user %in% c(&quot;1vbutkus&quot;, &quot;aaa&quot;, &quot;testas&quot;)
-ddf=df[!c,] </code></pre>
+ddf=df[!c,]</code></pre>
 <p>Istrinus eilutes kurios nepriklaso studentams, pastebim, kad kaikurie studentai pasikartoja, yra uzsivadine skirtyngais vardais: “Juste”, “juste”, “ju”, “j” ir “gyse”, “gyse3054” bei “rokasalek”, “rokasaleks”, tai kiekviena is ju priskiriam vienam vartotojui.</p>
 <pre class="r"><code>ddf$user[ddf$user==&quot;gyse&quot;] &lt;- &quot;gyse3054&quot;
 ddf$user[ddf$user==&quot;rokasalek&quot;] &lt;- &quot;rokasaleks&quot;
@@ -208,29 +208,55 @@ table(ddf$user)</code></pre>
 ##               131                 8                 9               114 
 ## SandraKozlovskaja  simonalevickaite       sindeivydas 
 ##                16                 5                18</code></pre>
-<p>Dabar pasalinsime studentus is saraso, kurie praleido bent viena uzduoti ir tuos kurie nepadare visu uzduociu ir parodysim sarasa is likusiu studentu.</p>
-<pre class="r"><code>c=ddf$user %in% c(&quot;Dariukxas&quot;, &quot;Domante Bulovaite&quot;, &quot;Greta&quot;, &quot;gretajes&quot;, &quot;gyse3054&quot;, &quot;juste&quot;, &quot;Juste&quot;, &quot;Karolina&quot;, &quot;kestous&quot;, &quot;ogadova&quot;, &quot;ojautakaite&quot;,  &quot;Raigardas&quot;, &quot;rokasaleks&quot;, &quot;SandraKozlovskaja&quot;, &quot;simonalevickaite&quot;, &quot;sindeivydas&quot;, &quot;j&quot; , &quot;ju&quot; , &quot;Danielius&quot; , &quot;Dominykas&quot; , &quot;rokasalek&quot;)
-table(ddf[!(c),7])</code></pre>
+<p>Dabar pasalinsime studentus is saraso, kurie praleido bent viena uzduoti parodysim sarasa is likusiu studentu ir kiek jie atliko.</p>
+<pre class="r"><code>ind&lt;-ddf$user %in% c(&quot;Dariukxas&quot;, &quot;Domante Bulovaite&quot;, &quot;Greta&quot;, &quot;gretajes&quot;, &quot;gyse3054&quot;, &quot;juste&quot;, &quot;Juste&quot;, &quot;Karolina&quot;, &quot;kestous&quot;, &quot;ogadova&quot;, &quot;ojautakaite&quot;,  &quot;Raigardas&quot;, &quot;rokasaleks&quot;, &quot;SandraKozlovskaja&quot;, &quot;simonalevickaite&quot;, &quot;sindeivydas&quot;, &quot;j&quot; , &quot;ju&quot;)
+table(ddf[!(ind),7])</code></pre>
 <pre><code>## 
-##     aipe00   edba2903   emru3000   MildaPie simona1234    zagnyte 
-##        344        280        413        346        333        378</code></pre>
-<p>Issiaiskinsim, is likusiuju studentu,kurie atliko visas 16 pamoku, o kurie ne.</p>
-<pre class="r"><code> d=data.frame(ddf$user, ddf$lesson_name)
- d2=d[!duplicated(d), ]
- table(d2[,1])</code></pre>
+##     aipe00  Danielius  Dominykas   edba2903   emru3000   MildaPie 
+##        344          3          2        280        413        346 
+## simona1234    zagnyte 
+##        333        378</code></pre>
+<p>Matom kiek koks studentas atsake klausimu, o dabar paziuresim kiek padare kiekvienas uzduociu.</p>
+<pre class="r"><code>ind2&lt;-ddf[!ind,]
+d=data.frame(ind2$user, ind2$lesson_name)
+d2=d[!duplicated(d), ]
+table(d2[,1])</code></pre>
 <pre><code>## 
-##            aipe00         Danielius         Dariukxas Domante Bulovaite 
-##                16                 1                16                16 
-##         Dominykas          edba2903          emru3000          gyse3054 
-##                 1                11                16                16 
-##             Greta          gretajes             juste          Karolina 
-##                16                 9                 9                16 
-##           kestous          MildaPie           ogadova       ojautakaite 
-##                16                15                16                15 
-##         Raigardas        rokasaleks SandraKozlovskaja        simona1234 
-##                16                16                16                16 
-##  simonalevickaite       sindeivydas           zagnyte 
-##                15                16                16</code></pre>
+##     aipe00  Danielius  Dominykas   edba2903   emru3000   MildaPie 
+##         16          1          1         11         16         15 
+## simona1234    zagnyte 
+##         16         16</code></pre>
+<p>Taigi, visas uzduotis atliko aipe00, emru3000, simona123 ir zagnyte.</p>
+<p>Kiekvienas studentas padare pamoku:</p>
+<pre class="r"><code>ind5&lt;-ddf$user%in%c(&quot;aipe00&quot;, &quot;zagnyte&quot;, &quot;emru3000&quot;, &quot;simona1234&quot;)
+ddf&lt;-ddf[!ind5,]
+data&lt;-read.csv(&quot;R_programing_swirlResults.csv&quot;, stringsAsFactors = FALSE)
+sk1=data.frame(ddf$user, ddf$lesson_name)
+sk2=sk1[!duplicated(sk1), ]
+table(sk2[,1])</code></pre>
+<pre><code>## 
+##         Danielius         Dariukxas Domante Bulovaite         Dominykas 
+##                 1                16                16                 1 
+##          edba2903          gyse3054             Greta          gretajes 
+##                11                16                16                 9 
+##             juste          Karolina           kestous          MildaPie 
+##                 9                16                16                15 
+##           ogadova       ojautakaite         Raigardas        rokasaleks 
+##                16                15                16                16 
+## SandraKozlovskaja  simonalevickaite       sindeivydas 
+##                16                15                16</code></pre>
+<p>Tiek klausimu kiekvienas studentas praleido:</p>
+<pre class="r"><code>table(ddf[ddf$skipped==TRUE,7])</code></pre>
+<pre><code>## 
+##         Dariukxas Domante Bulovaite          gyse3054             Greta 
+##                30                11                96                24 
+##          gretajes             juste          Karolina           kestous 
+##                 1                 2                76               269 
+##           ogadova       ojautakaite         Raigardas        rokasaleks 
+##               131                 8                 9               114 
+## SandraKozlovskaja  simonalevickaite       sindeivydas 
+##                16                 5                18</code></pre>
+<p>References: Ziureta i zagnyte, mildapie, simona1234 darbus.</p>
 </div>
 
 

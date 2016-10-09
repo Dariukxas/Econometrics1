@@ -34,7 +34,7 @@ Perziurejus vartotojus ir ju daryta uzduociu skaiciu, matome, vartotojai "1vbutk
 
 ```{r echo=TRUE}
 c=df$user %in% c("1vbutkus", "aaa", "testas")
-ddf=df[!c,] 
+ddf=df[!c,]
 ```
 
 Istrinus eilutes kurios nepriklaso studentams, pastebim, kad kaikurie studentai pasikartoja, yra uzsivadine skirtyngais vardais: "Juste", "juste", "ju", "j" ir "gyse", "gyse3054" bei "rokasalek", "rokasaleks", tai kiekviena is ju priskiriam vienam vartotojui.
@@ -63,11 +63,38 @@ Kad surast studentus, kurie atliko pilnai uzduotis, reik pirma pasalint tuos, ku
 table(ddf[ddf$skipped==TRUE,7])
 ```
 
-Dabar pasalinsime studentus is saraso, kurie praleido bent viena uzduoti ir tuos kurie nepadare visu uzduociu ir parodysim sarasa is likusiu studentu.
+Dabar pasalinsime studentus is saraso, kurie praleido bent viena uzduoti parodysim sarasa is likusiu studentu ir kiek jie atliko.
 
 ```{r echo=TRUE}
-c=ddf$user %in% c("Dariukxas", "Domante Bulovaite", "Greta", "gretajes", "gyse3054", "juste", "Juste", "Karolina", "kestous", "ogadova", "ojautakaite",  "Raigardas", "rokasaleks", "SandraKozlovskaja", "simonalevickaite", "sindeivydas", "j" , "ju" , "Danielius" , "Dominykas" , "rokasalek")
-table(ddf[!(c),7])
+ind<-ddf$user %in% c("Dariukxas", "Domante Bulovaite", "Greta", "gretajes", "gyse3054", "juste", "Juste", "Karolina", "kestous", "ogadova", "ojautakaite",  "Raigardas", "rokasaleks", "SandraKozlovskaja", "simonalevickaite", "sindeivydas", "j" , "ju")
+table(ddf[!(ind),7])
 ```
 
+Matom kiek koks studentas atsake klausimu, o dabar paziuresim kiek padare kiekvienas uzduociu.
 
+```{r echo=TRUE}
+ind2<-ddf[!ind,]
+d=data.frame(ind2$user, ind2$lesson_name)
+d2=d[!duplicated(d), ]
+table(d2[,1])
+```
+Taigi, visas uzduotis atliko aipe00, emru3000, simona123 ir zagnyte.
+
+Kiekvienas studentas padare pamoku:
+```{r }
+
+ind5<-ddf$user%in%c("aipe00", "zagnyte", "emru3000", "simona1234")
+ddf<-ddf[!ind5,]
+data<-read.csv("R_programing_swirlResults.csv", stringsAsFactors = FALSE)
+sk1=data.frame(ddf$user, ddf$lesson_name)
+sk2=sk1[!duplicated(sk1), ]
+table(sk2[,1])
+```
+
+Tiek klausimu kiekvienas studentas praleido:
+```{r }
+table(ddf[ddf$skipped==TRUE,7])
+```
+
+References:
+Ziureta i zagnyte, mildapie, simona1234 darbus.
