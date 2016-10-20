@@ -1,0 +1,37 @@
+---
+title: "Moneta"
+author: "Darius Bušniauskas"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## MONETA
+
+Tarkime metama moneta. Jeigu iškrenta herbas, tai laimite $12$ EUR. Jeigu skaicius, tai pralošiate $10$ EUR. Bus žaidžiama $100$ kartu ir gauti rezultatai sumuojami. Kokia tikimybe jums tureti teigiama balansa po $100$ kartu? Koks balanso pasikliautinis $95%$ intervalas? Kaip atrodo balanso tankis?
+
+Sudarome imti is n elementu, kurie atspindi kiekvieno zaidimo, metus 100 kartu moneta, balansa ir is jos isrinkus tik teigiamus skaicius apskaiciuojame tikimybe turet teigiama balansa.
+
+```{r}
+n=10^5
+suma <- replicate(n, sum(sample(c(12, -10), 100, replace = TRUE)))
+balansas <- sum((suma>0)==TRUE)
+prob <- balansas/n
+prob
+```
+
+Apkaiciuojant balanso 95% pasikliautini intervala, naudosim kvantiliu funkcija.
+
+```{r}
+quantile(suma, c(0.025,0.975))
+```
+
+Balanso tankis:
+
+```{r}
+plot(density(suma), main="Balanso tankis")
+```
+
+Ziureta i Agnes Zavackaites darba.

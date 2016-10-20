@@ -1,0 +1,32 @@
+---
+title: "Rulete"
+author: "Darius Buðniauskas"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Rulete
+
+Nagrinëkime standartinæ kazino ruletæ. Kokia tikimybë, kad po $1000$ vienodø statymø ant vienos pasirinktos spalvos, bus teigiamas balansas? Raskite apytikslæ $x$ reikðmæ, kuriai galioja nelygybe $P(balansas<x) = 0.25$.
+
+Standartineje ruleteje yra 36 langeliai ir papildomai nulis, tai isviso 37 langeliai. Vienos spalvos ir kitos spalvos yra po 18 langeliu, tai tikimybe laimeti yra 18/37, o pralost 19/37. Kai laimi, balansas padideja +1 , pralosi tai sumazeja -1. Taigi sugeneruosim imti ir apskaiciuosim tikimybe teigiamo balanso po 1000 vienodu statymu.
+
+```{r}
+n<-10^4
+balansas<-replicate(n, sum(sample(c(1,-1), size=1000, replace=TRUE, prob=c(18/37, 19/37))))
+teigbal <- balansas > 0
+prob <- sum(teigbal)/n
+prob
+```
+
+Ieskom x, kuriam galiotu nelygybe P(balansas<x) = 0.25, tam pasitelkiam kvantiliu funkcija.
+
+```{r}
+x <- quantile(balansas, probs=0.25)
+x
+```
+
+Ziureta i Ainos Petronytes darba
