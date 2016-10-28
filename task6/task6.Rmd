@@ -97,4 +97,4 @@ table(ddf[ddf$skipped==TRUE,7])
 ```
 
 References:
-Ziureta i zagnyte, mildapie, simona1234 darbus.
+Ziureta i Rhelpa bei zagnyte, mildapie, simona1234 darbus.

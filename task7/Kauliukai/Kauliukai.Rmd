@@ -1,6 +1,6 @@
 ---
 title: "Kauliukai"
-author: "Darius Bušniauskas"
+author: "Darius Buðniauskas"
 output: html_document
 ---
 
@@ -10,9 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Kauliukai
 
-Du žaidejai žaidžia toki žaidima. Pirmasis žaidejas meta tris kauliukus ir fikuoja iškritusiu tašku suma. Antrasis žaidejas ridena du kauliukus ir skiaciuoja iškrituiu tašku suma. Laimi tas žaidejas, kurio tašku suma yra didesne. Jeigu tašku sumos yra lygios, tai, tai ekspermentas kartojamas iš naujo (ir taip kartojama tol, kol galiausiai nustatomas laimetojas). Kokia tikimybe laimeti pirmajam žaidejui?
+Du Þaidejai þaidþia toki þaidima. Pirmasis þaidejas meta tris kauliukus ir fiksuoja iðkritusiu taðku suma. Antrasis þaidejas ridena du kauliukus ir skaiciuoja iðkritusiu taðku suma. Laimi tas þaidejas, kurio taðku suma yra didesne. Jeigu taðku sumos yra lygios, tai ekspermentas kartojamas ið naujo (ir taip kartojama tol, kol galiausiai nustatomas laimetojas). Kokia tikimybe laimeti pirmajam þaidejui?
 
-Sugeneruojame dvi imtis, kur abu zaidejai meta n kartu kauliukus.
+Sugeneruojame dvi imtis, kur abu zaidejai meta n kartu kauliukus. Pirmoje imtije zaidejas meta 3 kauliukus, antroje du kauliukus.
 
 ```{r}
 n=10^5
@@ -20,11 +20,16 @@ z1 <- replicate(n, sum(sample(1:6, 3, replace=TRUE)))
 z2 <- replicate(n, sum(sample(1:6, 2, replace=TRUE)))
 ```
 
-Kad apskaiciuot tikimybe, kad laimejo pirmas zaidejas, pirma suskaiciuojame kiek kartu pirmas zaidejas ismete didesni akuciu skaiciu, tada apskaiciuojam kiek kartu buvo ismestas vienodas akuciu skaicius ir iskritusiu didesniu akuciu skaiciu padaliname is n metimo kartu atemus kartus kai iskrito po lygiai akuciu zaidejams.
+Kad apskaiciuot tikimybe, kad laimejo pirmas zaidejas, pirma suskaiciuojame kiek kartu pirmas zaidejas ismete didesni akuciu skaiciu, tada apskaiciuojam kiek kartu buvo ismestas vienodas akuciu skaicius ir iskritusiu didesniu akuciu skaiciu padaliname is n metimo kartu atemus kartus, kai iskrito po lygiai akuciu zaidejams.
 
 ```{r}
 laimi_z1 <- sum((z1>z2)==TRUE)
 lygiosios <- sum((z1==z2)==TRUE)
 tik <- laimi_z1/(n-lygiosios)
+```
+
+Gaunam tikimybe, kad pirmas zaidejas laimes:
+
+```{r}
 tik
 ```

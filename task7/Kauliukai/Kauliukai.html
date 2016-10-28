@@ -123,17 +123,18 @@ $(document).ready(function () {
 
 <div id="kauliukai" class="section level2">
 <h2>Kauliukai</h2>
-<p>Du žaidejai žaidžia toki žaidima. Pirmasis žaidejas meta tris kauliukus ir fikuoja iškritusiu tašku suma. Antrasis žaidejas ridena du kauliukus ir skiaciuoja iškrituiu tašku suma. Laimi tas žaidejas, kurio tašku suma yra didesne. Jeigu tašku sumos yra lygios, tai, tai ekspermentas kartojamas iš naujo (ir taip kartojama tol, kol galiausiai nustatomas laimetojas). Kokia tikimybe laimeti pirmajam žaidejui?</p>
-<p>Sugeneruojame dvi imtis, kur abu zaidejai meta n kartu kauliukus.</p>
+<p>Du Žaidejai žaidžia toki žaidima. Pirmasis žaidejas meta tris kauliukus ir fiksuoja iškritusiu tašku suma. Antrasis žaidejas ridena du kauliukus ir skaiciuoja iškritusiu tašku suma. Laimi tas žaidejas, kurio tašku suma yra didesne. Jeigu tašku sumos yra lygios, tai ekspermentas kartojamas iš naujo (ir taip kartojama tol, kol galiausiai nustatomas laimetojas). Kokia tikimybe laimeti pirmajam žaidejui?</p>
+<p>Sugeneruojame dvi imtis, kur abu zaidejai meta n kartu kauliukus. Pirmoje imtije zaidejas meta 3 kauliukus, antroje du kauliukus.</p>
 <pre class="r"><code>n=10^5
 z1 &lt;- replicate(n, sum(sample(1:6, 3, replace=TRUE)))
 z2 &lt;- replicate(n, sum(sample(1:6, 2, replace=TRUE)))</code></pre>
-<p>Apskaiciuojame tikimybe, kad laimejo pirmas zaidejas, pirma suskaiciuojame kiek kartu pirmas zaidejas ismete didesni akuciu skaiciu, tada apskaiciuojam kiek kartu buvo ismestas vienodas akuciu skaicius</p>
+<p>Kad apskaiciuot tikimybe, kad laimejo pirmas zaidejas, pirma suskaiciuojame kiek kartu pirmas zaidejas ismete didesni akuciu skaiciu, tada apskaiciuojam kiek kartu buvo ismestas vienodas akuciu skaicius ir iskritusiu didesniu akuciu skaiciu padaliname is n metimo kartu atemus kartus, kai iskrito po lygiai akuciu zaidejams.</p>
 <pre class="r"><code>laimi_z1 &lt;- sum((z1&gt;z2)==TRUE)
 lygiosios &lt;- sum((z1==z2)==TRUE)
-tik &lt;- laimi_z1/(n-lygiosios)
-tik</code></pre>
-<pre><code>## [1] 0.8362132</code></pre>
+tik &lt;- laimi_z1/(n-lygiosios)</code></pre>
+<p>Gaunam tikimybe, kad pirmas zaidejas laimes:</p>
+<pre class="r"><code>tik</code></pre>
+<pre><code>## [1] 0.8358027</code></pre>
 </div>
 
 

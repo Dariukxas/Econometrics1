@@ -13,9 +13,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Generuojame $n$ atsitiktiniø dydþiø turinèiø Beta skirstiná su parametrais $\alpha=\beta=0.5$ Ið ðiø atsitiktiniø dydþiø suskaièiuojamas aritmetinis vidurkis. Kaip atrodo aritmetinio vidurkio tankis, kai $n=100$?
 
+Sugeneruojame turinti n a.d. Beta skirstini ir iskart paskaiciuojame jo aritmetini vidurki ir nubraizome aritmetinio virdurio tankio grafika
 ```{r}
 n=100
 vidurkis = replicate(10000, mean(rbeta(n, 0.5, 0.5)))
-plot(density(vidurkis), main="Aritmetinio vidurkio tankis, kai $n=100$")
+plot(density(vidurkis), main="Aritmetinio vidurkio tankis, kai n=100")
 
 ```
