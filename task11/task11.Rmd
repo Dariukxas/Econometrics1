@@ -1,0 +1,57 @@
+---
+title: "task 11"
+author: "Darius Bušniauskas"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Pakete datasets yra duomenų masyvas longley. Iš šio kintamųjų padarykite tiesinę regresiją, kur prognozuojamas kintamasis būtų GNP, o regresosius Employed. Jums reikia:
+
+Įvertinti paprastosios tiesinės regresijos modelį. Pateikti modelio summary ir pakomentuoti ką reiškia gauti skaičiai. Kaip interpretuoti gautus rezultatus?
+
+Padarykite modelio prognozes taškuose $62, 65, 68$.
+
+Išbrėžkite kintamųjų sklaidos diagramą kartu su tiesinės regresijos tiese ir naujomis prognozėmis. Grafiką pateikite su pilna legena, kurioje būtų nurodyti visi žymėjimai.
+
+
+
+**Įvertinti paprastosios tiesinės regresijos modelį. Pateikti modelio summary ir pakomentuoti ką reiškia gauti skaičiai. Kaip interpretuoti gautus rezultatus?**
+
+```{r}
+longley  #perziurim duomenu pasyva longley
+x<-longley$Employed  #x priskiriam longlvey masyvo emplyoed reiksmes
+y<-longley$GNP  #y prisikiriam longley masyvo GNP reiksmes
+reg<- lm(y~x)  # padarom tiesines regresijos modeli is employed and GNP reiksmiu
+summary(reg)
+```
+
+**Residuals** parodo paklaidą, nukrypimą kiek prognozuojami duomenys gali skirtis nuo stebimų duomenų, ir kaip jie pasiskirsto aplink isbrezta musu regresijos tiese. Šioje skiltyje yra 5 reikšmės **Min ir Max** rodo mažiausia ir didžiausia reiškmes, **1Q ir 3Q** tai yra kvartiliai, o **Median**  tai vidurine duomenu variacinės eilutės reikšmė.
+
+**Coefficients** tai **Estimate** rodo regresines lygties yt=β0+β1xt+εt koficientus: β0=-1430.482, β1=27.836. **Std. Error** standartini nuokrypi β0, β1 ir β2. **t value**  rodo Stjudento kriterijaus t statistikos reikšmę, o **Pr(>|t|)** pasako reikšmingumo lygmeni, su kuriuo koeficientai bus teisingi.
+
+**Residual standard error** rodo paklaida tarp duomenu su tam tikru laisvės laipsniu.
+
+**Multiple R-squared** tai skaicius parodantis kiek tinkamas yra modelis, ir kuo jis yra artesnis link 1 tuo modelis tinkamesnis.
+
+
+**Padarykite modelio prognozes taškuose $62, 65, 68$.**
+
+```{r}
+x1=c(62, 65, 68)  # surasom i vektoriu tris taskus
+y1 = predict(reg, data.frame(x=x1)) # prognozuojam 3 tasku progranozes pagal modeli
+y1
+```
+
+**Išbrėžkite kintamųjų sklaidos diagramą kartu su tiesinės regresijos tiese ir naujomis prognozėmis. Grafiką pateikite su pilna legena, kurioje būtų nurodyti visi žymėjimai.**
+
+```{r}
+plot(x,y, xlab='Employed', ylab='GNP')
+abline(reg, col="red")
+points(x1,y1, col="green", pch=15)
+legend("topleft", c("Prognozės","Regresijos  tiesė", "Duomenys"), lty=c(0,1,0), pch=c(15,NA,1), col=c("green","red",1))
+```
+
+**Šaltiniai**: Editos Basytės darbas
