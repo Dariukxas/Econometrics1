@@ -1,0 +1,14 @@
+---
+title: "3 uzduotis"
+author: "Darius Bušniauskas"
+date: '2017 m sausis 20 d '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+duom<-read.table("https://raw.githubusercontent.com/1vbutkus/Econometrics1/master/Egzaminas/data.csv", header = TRUE, sep = ";", quote = "", fill = TRUE, skip=7)
+```

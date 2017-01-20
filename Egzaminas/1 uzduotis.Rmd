@@ -1,0 +1,57 @@
+---
+title: "1 uzduotis"
+author: "Darius Bušniauskas"
+date: '2017 m sausis 20 d '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Sugeneruokite x su pateiktu R kodu.
+
+set.seed(1234567890)
+x <- rnorm(5000)
+
+```{r}
+set.seed(1234567890)
+x <- rnorm(5000)
+```
+
+a) Suraskite x vidukio ir standartinio nuokrypio įverčius.
+
+```{r}
+vid<-mean(x)  # vidurkis
+vid
+disp<-var(x)  # standartinis nuokrypis
+disp
+```
+
+b) Raskite x išskirtis. Šioje užduotyje, išskirtimis laikome reikšmes, kurios nepakliūna į intervalą $$[\bar{X} - 3\hat{sd}]; \bar{X} + 3\hat{sd}].$$ Čia $\bar{X}$ ir $\hat{sd}$ atitinkamai žymi vidukio ir standartinio nuokrypio įverčius. Atsakymui pateikite ir reikšmes, ir atitinkamus reikšmių indeksus.
+
+```{r}
+min=vid-3*disp
+max=vid+3*disp
+isskirtys=x[x<min|x>max]
+indeksas<-(c(rep(0,length(isskirtys))))
+```
+
+```{r}
+z=1
+for(i in 1:5000) {
+  if((x[i]<min|x[i]>max)==TRUE){
+    indeksas[z]<-i
+    z=z+1
+  }
+}
+
+paste("x=",isskirtys,"; indeksas=", indeksas, sep="")
+```
+
+c) Pašalinkite rastas išskirtis iš x vektorius ir nubrėžkite atnaujinto x histogramą.
+
+```{r}
+newx<-x[((x<min|x>max)==FALSE)]
+hist(newx)
+```
